@@ -1,0 +1,28 @@
+name: Build and Deploy API Docs
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docs
+        run: ./make.sh
+
+      # https://github.com/peaceiris/actions-gh-pages
+      - name: Deploy to Github pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: .
+          force_orphan: true
+          exclude_assets: '.github, openapi, .redocly.yaml, make.sh'

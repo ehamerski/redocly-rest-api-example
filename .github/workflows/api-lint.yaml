@@ -1,0 +1,25 @@
+name: API Linting with Redocly
+
+on: [pull_request]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # https://github.com/actions/setup-node
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      
+      - name: Install Redocly CLI
+        run: npm install -g @redocly/cli@latest
+
+      - name: Run Lint Tests
+        run: redocly lint ./openapi/openapi.yaml --format=github-actions
